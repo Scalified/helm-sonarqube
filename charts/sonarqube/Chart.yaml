@@ -1,0 +1,25 @@
+apiVersion: v2
+name: sonarqube
+version: 25.1.0
+appVersion: "25.1.0.102122-community"
+kubeVersion: ">= 1.13.0"
+description: SonarQube Helm Chart
+type: application
+home: https://github.com/Scalified/helm-sonarqube
+icon: https://scalified.github.io/helm-sonarqube/icon.png
+maintainers:
+  - name: Vladyslav Baidak
+    email: vld.x@hotmail.com
+    url: https://scalified.com
+keywords:
+  - sonarqube
+  - code
+  - quality
+  - analysis
+  - static
+  - security
+annotations:
+  artifacthub.io/category: integration-delivery
+  artifacthub.io/signKey: |
+    fingerprint: 687D9BE990493C58C0CFBEB65A065879383D7E21
+    url: https://keybase.io/scalified/pgp_keys.asc
