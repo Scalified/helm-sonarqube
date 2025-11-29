@@ -93,7 +93,7 @@
                       "properties": {
                         "memory": {
                           "type": "string",
-                          "description": "Minimum amount of memory requested for the server container",
+                          "description": "Minimum amount of memory requested for the SonarQube container",
                           "default": "2Gi"
                         }
                       }
@@ -196,9 +196,7 @@
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string",
-                    "minimum": 1,
-                    "maximum": 65535
+                    "type": "string"
                   },
                   "port": {
                     "type": "integer",
