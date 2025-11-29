@@ -1,0 +1,95 @@
+# Override the name of the chart (used in naming resources)
+nameOverride: ""
+
+# Override the full name (default is the chart name + release name)
+fullnameOverride: ""
+
+# SonarQube configuration
+sonarqube:
+  # Metadata annotations for the SonarQube deployment
+  # Example:
+  # annotations:
+  #   example.com/annotation: "value"
+  annotations: {}
+
+  # Number of replicas/pods to run (should typically be 1)
+  replicaCount: 1
+
+  # SonarQube containers configuration
+  containers:
+    # SonarQube container configuration
+    sonarqube:
+      image:
+        # Docker image repository for SonarQube
+        repository: sonarqube
+        # Image tag to use (leave empty to use default from Chart or latest)
+        tag: ""
+        # Image pull policy (e.g., Always, IfNotPresent, Never)
+        pullPolicy: IfNotPresent
+
+      # Environment variables for SonarQube container
+      env: []
+
+      resources:
+        requests:
+          # Minimum amount of memory requested for the container
+          memory: 2Gi
+
+      # Additional volume mounts for the SonarQube container
+      # Example:
+      # volumeMounts:
+      #   - name: sonarqube
+      #     mountPath: /opt/sonarqube/data
+      #     subPath: data
+      volumeMounts: []
+
+      # Default port for the SonarQube HTTP service (web UI and API)
+      port: 9000
+
+  # Hostname used for the SonarQube pod/container
+  hostname: sonarqube
+
+  # Additional volumes to be mounted into the pod
+  # Example:
+  # volumes:
+  #   - name: sonarqube
+  #     persistentVolumeClaim:
+  #       claimName: sonarqube
+  volumes: []
+
+  # Configuration for the Kubernetes Service exposing SonarQube
+  service:
+    # Kubernetes service type (e.g., ClusterIP, NodePort, LoadBalancer)
+    type: ClusterIP
+    # List of ports to expose via the service
+    # Each entry defines a port name, external service port, internal container target port, and protocol
+    ports:
+      - name: http
+        port: 9000
+        targetPort: 9000
+        protocol: TCP
+
+  # Configuration for Ingress to expose SonarQube via HTTP/HTTPS
+  # Example:
+  # annotations:
+  #   nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+  #   nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+  #   nginx.ingress.kubernetes.io/configuration-snippet: |
+  #     more_set_headers "X-Content-Type-Options: nosniff";
+  # className: nginx
+  # tls:
+  #   - hosts:
+  #       - sonarqube.example.com
+  #     secretName: sonarqube-tls
+  # rules:
+  #   - host: sonarqube.example.com
+  #     http:
+  #       paths:
+  #         - path: /
+  #           pathType: Prefix
+  #           backend:
+  #             service:
+  #               name: sonarqube
+  #               port:
+  #                 number: 9000
+  ingress: {}
