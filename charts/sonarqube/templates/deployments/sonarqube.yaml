@@ -2,8 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "sonarqube.fullname" $ }}
-  labels:
-    {{- include "sonarqube.labels" $ | nindent 4 }}
+  labels: {{ include "sonarqube.labels" $ | nindent 4 }}
 spec:
   {{- with .Values.sonarqube }}
   {{- $sonarqube := . }}
@@ -11,16 +10,13 @@ spec:
   strategy:
     type: Recreate
   selector:
-    matchLabels:
-      {{- include "sonarqube.selectorLabels" $ | nindent 6 }}
+    matchLabels: {{ include "sonarqube.selectorLabels" $ | nindent 6 }}
   template:
     metadata:
       {{- if .annotations }}
-      annotations:
-        {{- toYaml .annotations | nindent 8 }}
+      annotations: {{ toYaml .annotations | nindent 8 }}
       {{- end }}
-      labels:
-        {{- include "sonarqube.selectorLabels" $ | nindent 8 }}
+      labels: {{ include "sonarqube.selectorLabels" $ | nindent 8 }}
     spec:
       containers:
         {{- with .containers.sonarqube }}
@@ -30,8 +26,7 @@ spec:
           imagePullPolicy: {{ .pullPolicy | default "IfNotPresent" }}
           {{- end }}
           {{- if .env }}
-          env:
-            {{- toYaml .env | nindent 12 }}
+          env: {{ toYaml .env | nindent 12 }}
           {{- end }}
           {{- if $sonarqube.service }}
           ports:
@@ -43,7 +38,7 @@ spec:
           {{- end }}
           livenessProbe:
             httpGet:
-              path: /api/system/status
+              path: /
               port: {{ .port | default 9000 }}
               scheme: HTTP
             initialDelaySeconds: 60
@@ -53,7 +48,7 @@ spec:
             failureThreshold: 5
           readinessProbe:
             httpGet:
-              path: /api/system/status
+              path: /
               port: {{ .port | default 9000 }}
               scheme: HTTP
             initialDelaySeconds: 30
@@ -61,19 +56,41 @@ spec:
             timeoutSeconds: 2
             successThreshold: 1
             failureThreshold: 3
+          {{- if .startupProbe }}
+          startupProbe: {{ toYaml .startupProbe | nindent 12 }}
+          {{- end }}
           {{- if .resources }}
-          resources:
-            {{- toYaml .resources | nindent 12 }}
+          resources: {{ toYaml .resources | nindent 12 }}
           {{- end }}
           {{- if .volumeMounts }}
-          volumeMounts:
-            {{- toYaml .volumeMounts | nindent 12 }}
+          volumeMounts: {{ toYaml .volumeMounts | nindent 12 }}
+          {{- end }}
+        {{- end }}
+        {{- with .containers.database }}
+        - name: database
+          {{- with .image }}
+          image: "{{ .repository }}:{{ .tag }}"
+          imagePullPolicy: {{ .pullPolicy | default "IfNotPresent" }}
+          {{- end }}
+          {{- if .env }}
+          env: {{- toYaml .env | nindent 12 }}
+          {{- end }}
+          {{- if .livenessProbe }}
+          livenessProbe: {{ toYaml .livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .readinessProbe }}
+          readinessProbe: {{ toYaml .readinessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .resources }}
+          resources: {{ toYaml .resources | nindent 12 }}
+          {{- end }}
+          {{- if .volumeMounts }}
+          volumeMounts: {{ toYaml .volumeMounts | nindent 12 }}
           {{- end }}
         {{- end }}
       hostname: {{ .hostname | default "sonarqube" }}
       restartPolicy: Always
       {{- if .volumes }}
-      volumes:
-        {{- toYaml .volumes | nindent 8 }}
+      volumes: {{ toYaml .volumes | nindent 8 }}
       {{- end }}
   {{- end }}

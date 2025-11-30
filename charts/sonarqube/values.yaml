@@ -28,7 +28,23 @@ sonarqube:
         pullPolicy: IfNotPresent
 
       # Environment variables for SonarQube container
-      env: []
+      env:
+        - name: SONAR_JDBC_URL
+          value: jdbc:postgresql://localhost/sonarqube
+        - name: SONAR_JDBC_USERNAME
+          value: sonarqube
+        - name: SONAR_JDBC_PASSWORD
+          value: sonarqube
+
+      # Startup probe configuration for SonarQube container
+      startupProbe:
+        failureThreshold: 3
+        initialDelaySeconds: 20
+        periodSeconds: 10
+        successThreshold: 1
+        tcpSocket:
+          port: 5432
+        timeoutSeconds: 2
 
       resources:
         requests:
@@ -45,6 +61,57 @@ sonarqube:
 
       # Default port for the SonarQube HTTP service (web UI and API)
       port: 9000
+    # Database container configuration
+    database:
+      image:
+        # Docker image repository for database
+        repository: postgres
+        # Image tag to use for database
+        tag: "16-alpine"
+        # Image pull policy for database container
+        pullPolicy: IfNotPresent
+
+      # Environment variables for database container
+      env:
+        - name: POSTGRES_DB
+          value: sonarqube
+        - name: POSTGRES_PASSWORD
+          value: sonarqube
+        - name: POSTGRES_USER
+          value: sonarqube
+
+      # Liveness probe configuration for database container
+      livenessProbe:
+        failureThreshold: 5
+        initialDelaySeconds: 30
+        periodSeconds: 30
+        successThreshold: 1
+        tcpSocket:
+          port: 5432
+        timeoutSeconds: 2
+
+      # Readiness probe configuration for database container
+      readinessProbe:
+        failureThreshold: 3
+        initialDelaySeconds: 20
+        periodSeconds: 15
+        successThreshold: 1
+        tcpSocket:
+          port: 5432
+        timeoutSeconds: 2
+
+      resources:
+        requests:
+          # Minimum amount of memory requested for the database container
+          memory: 200Mi
+
+      # Additional volume mounts for the database container
+      # Example:
+      # volumeMounts:
+      #   - name: sonarqube
+      #     mountPath: /var/lib/postgresql/data
+      #     subPath: postgresql
+      volumeMounts: []
 
   # Hostname used for the SonarQube pod/container
   hostname: sonarqube

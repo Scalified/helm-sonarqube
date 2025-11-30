@@ -85,6 +85,58 @@
                     ]
                   }
                 },
+                "startupProbe": {
+                  "type": "object",
+                  "description": "Startup probe configuration for SonarQube container",
+                  "properties": {
+                    "failureThreshold": {
+                      "type": "integer",
+                      "description": "Number of consecutive failures before the probe is considered failed",
+                      "minimum": 1,
+                      "default": 3
+                    },
+                    "initialDelaySeconds": {
+                      "type": "integer",
+                      "description": "Number of seconds after the container has started before liveness probes are initiated",
+                      "minimum": 0,
+                      "default": 20
+                    },
+                    "periodSeconds": {
+                      "type": "integer",
+                      "description": "How often (in seconds) to perform the probe",
+                      "minimum": 1,
+                      "default": 10
+                    },
+                    "successThreshold": {
+                      "type": "integer",
+                      "description": "Minimum consecutive successes for the probe to be considered successful after having failed",
+                      "minimum": 1,
+                      "default": 1
+                    },
+                    "tcpSocket": {
+                      "type": "object",
+                      "description": "TCP socket probe configuration",
+                      "properties": {
+                        "port": {
+                          "type": "integer",
+                          "description": "Port to probe",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "default": 5432
+                        }
+                      },
+                      "required": ["port"]
+                    },
+                    "timeoutSeconds": {
+                      "type": "integer",
+                      "description": "Number of seconds after which the probe times out",
+                      "minimum": 1,
+                      "maximum": 60,
+                      "default": 2
+                    }
+                  },
+                  "required": []
+                },
                 "resources": {
                   "type": "object",
                   "properties": {
@@ -128,10 +180,205 @@
                 "image",
                 "port"
               ]
+            },
+            "database": {
+              "type": "object",
+              "description": "Database container configuration",
+              "properties": {
+                "image": {
+                  "type": "object",
+                  "properties": {
+                    "repository": {
+                      "type": "string",
+                      "description": "Docker image repository for database",
+                      "default": "postgres"
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Image tag to use for database",
+                      "default": "16-alpine"
+                    },
+                    "pullPolicy": {
+                      "type": "string",
+                      "description": "Image pull policy for database container",
+                      "default": "IfNotPresent",
+                      "enum": [
+                        "Always",
+                        "IfNotPresent",
+                        "Never"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "repository",
+                    "pullPolicy"
+                  ]
+                },
+                "env": {
+                  "type": "array",
+                  "description": "Environment variables for database container",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "value"
+                    ]
+                  }
+                },
+                "livenessProbe": {
+                  "type": "object",
+                  "description": "Liveness probe configuration for database container",
+                  "properties": {
+                    "failureThreshold": {
+                      "type": "integer",
+                      "description": "Number of consecutive failures before the probe is considered failed",
+                      "minimum": 1,
+                      "default": 5
+                    },
+                    "initialDelaySeconds": {
+                      "type": "integer",
+                      "description": "Number of seconds after the container has started before liveness probes are initiated",
+                      "minimum": 0,
+                      "default": 30
+                    },
+                    "periodSeconds": {
+                      "type": "integer",
+                      "description": "How often (in seconds) to perform the probe",
+                      "minimum": 1,
+                      "default": 30
+                    },
+                    "successThreshold": {
+                      "type": "integer",
+                      "description": "Minimum consecutive successes for the probe to be considered successful after having failed",
+                      "minimum": 1,
+                      "default": 1
+                    },
+                    "tcpSocket": {
+                      "type": "object",
+                      "description": "TCP socket probe configuration",
+                      "properties": {
+                        "port": {
+                          "type": "integer",
+                          "description": "Port to probe",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "default": 5432
+                        }
+                      },
+                      "required": ["port"]
+                    },
+                    "timeoutSeconds": {
+                      "type": "integer",
+                      "description": "Number of seconds after which the probe times out",
+                      "minimum": 1,
+                      "maximum": 60,
+                      "default": 2
+                    }
+                  },
+                  "required": []
+                },
+                "readinessProbe": {
+                  "type": "object",
+                  "description": "Readiness probe configuration for PostgreSQL container",
+                  "properties": {
+                    "failureThreshold": {
+                      "type": "integer",
+                      "description": "Number of consecutive failures before the probe is considered failed",
+                      "minimum": 1,
+                      "default": 3
+                    },
+                    "initialDelaySeconds": {
+                      "type": "integer",
+                      "description": "Number of seconds after the container has started before readiness probes are initiated",
+                      "minimum": 0,
+                      "default": 20
+                    },
+                    "periodSeconds": {
+                      "type": "integer",
+                      "description": "How often (in seconds) to perform the probe",
+                      "minimum": 1,
+                      "default": 15
+                    },
+                    "successThreshold": {
+                      "type": "integer",
+                      "description": "Minimum consecutive successes for the probe to be considered successful after having failed",
+                      "minimum": 1,
+                      "default": 1
+                    },
+                    "tcpSocket": {
+                      "type": "object",
+                      "description": "TCP socket probe configuration",
+                      "properties": {
+                        "port": {
+                          "type": "integer",
+                          "description": "Port to probe",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "default": 5432
+                        }
+                      },
+                      "required": ["port"]
+                    },
+                    "timeoutSeconds": {
+                      "type": "integer",
+                      "description": "Number of seconds after which the probe times out",
+                      "minimum": 1,
+                      "maximum": 60,
+                      "default": 2
+                    }
+                  },
+                  "required": []
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string",
+                          "description": "Minimum amount of memory requested for the database container",
+                          "default": "200Mi"
+                        }
+                      }
+                    }
+                  },
+                  "volumeMounts": {
+                    "type": "array",
+                    "description": "Additional volume mounts for the database container",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "mountPath": {
+                          "type": "string"
+                        },
+                        "subPath": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "image"
+              ]
             }
           },
           "required": [
-            "sonarqube"
+            "sonarqube",
+            "database"
           ]
         },
         "hostname": {
@@ -241,7 +488,7 @@
             "className": {
               "type": "string",
               "description": "Ingress class name (used to select the Ingress controller, e.g., nginx or traefik)",
-              "default": "nginx"
+              "default": ""
             },
             "tls": {
               "type": "array",
