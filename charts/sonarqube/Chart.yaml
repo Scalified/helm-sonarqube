@@ -1,7 +1,7 @@
 apiVersion: v2
 name: sonarqube
-version: 26.2.0
-appVersion: "26.2.0.119303-community"
+version: 26.3.0
+appVersion: "26.3.0.120487-community"
 kubeVersion: ">= 1.13.0"
 description: SonarQube Helm Chart
 type: application
