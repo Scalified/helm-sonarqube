@@ -1,9 +1,10 @@
-{{- if .Values.sonarqube.service }}
-{{- with .Values.sonarqube.service }}
+{{- if .Values.sonarqube.services }}
+{{- range .Values.sonarqube.services }}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "sonarqube.fullname" $ }}
+  name: {{ include "sonarqube.fullname" $ }}{{ if .name }}-{{ .name }}{{ end }}
   labels: {{ include "sonarqube.labels" $ | nindent 4 }}
 spec:
   selector: {{ include "sonarqube.selectorLabels" $ | nindent 4 }}

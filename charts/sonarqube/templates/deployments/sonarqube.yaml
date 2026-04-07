@@ -28,14 +28,10 @@ spec:
           {{- if .env }}
           env: {{ toYaml .env | nindent 12 }}
           {{- end }}
-          {{- if $sonarqube.service }}
           ports:
-            {{- range $sonarqube.service.ports }}
-            - containerPort: {{ .targetPort }}
-              name: {{ .name }}
-              protocol: {{ .protocol }}
-            {{- end }}
-          {{- end }}
+            - containerPort: {{ .port | default 9000 }}
+              name: sonarqube
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /
