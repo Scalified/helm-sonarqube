@@ -384,7 +384,7 @@
         "hostname": {
           "type": "string",
           "description": "Hostname used for the SonarQube pod/container",
-          "default": "sonarqube"
+          "default": ""
         },
         "volumes": {
           "type": "array",

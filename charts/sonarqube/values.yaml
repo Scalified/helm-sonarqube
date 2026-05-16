@@ -115,7 +115,7 @@ sonarqube:
       volumeMounts: []
 
   # Hostname used for the SonarQube pod/container
-  hostname: sonarqube
+  hostname: ""
 
   # Additional volumes to be mounted into the pod
   # Example:
