@@ -7,6 +7,35 @@ entries:
         fingerprint: 687D9BE990493C58C0CFBEB65A065879383D7E21
         url: https://keybase.io/scalified/pgp_keys.asc
     apiVersion: v2
+    appVersion: 26.5.0.122743-community
+    created: "2026-05-16T04:22:42.784350767Z"
+    description: SonarQube Helm Chart
+    digest: 23496091504aa43d70c3f94618e074969b6b9c4dafcd8a4940bc5547b8d4c7e0
+    home: https://github.com/Scalified/helm-sonarqube
+    icon: https://scalified.github.io/helm-sonarqube/icon.png
+    keywords:
+    - sonarqube
+    - code
+    - quality
+    - analysis
+    - static
+    - security
+    kubeVersion: '>= 1.13.0'
+    maintainers:
+    - email: vld.x@hotmail.com
+      name: Vladyslav Baidak
+      url: https://scalified.com
+    name: sonarqube
+    type: application
+    urls:
+    - https://github.com/Scalified/helm-sonarqube/releases/download/sonarqube-26.5.0/sonarqube-26.5.0.tgz
+    version: 26.5.0
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/signKey: |
+        fingerprint: 687D9BE990493C58C0CFBEB65A065879383D7E21
+        url: https://keybase.io/scalified/pgp_keys.asc
+    apiVersion: v2
     appVersion: 26.4.0.121862-community
     created: "2026-04-15T05:15:06.761943886Z"
     description: SonarQube Helm Chart
@@ -117,4 +146,4 @@ entries:
     urls:
     - https://github.com/Scalified/helm-sonarqube/releases/download/sonarqube-25.11.0/sonarqube-25.11.0.tgz
     version: 25.11.0
-generated: "2026-04-15T05:15:06.761957652Z"
+generated: "2026-05-16T04:22:42.784377277Z"
